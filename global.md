@@ -1035,7 +1035,7 @@ Another of IPv6's extension headers is the routing header. In the
 absence of this header, routing for IPv6 differs very little from that
 of IPv4 under CIDR. The routing header contains a list of IPv6 addresses
 that represent nodes or topological areas that the packet should visit
-en route to its destination. A topological area may be, for example, a
+when routed to its destination. A topological area may be, for example, a
 backbone provider's network. Specifying that packets must visit this
 network would be a way of implementing provider selection on a
 packet-by-packet basis. Thus, a host could say that it wants some
