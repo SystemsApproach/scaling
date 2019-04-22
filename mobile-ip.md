@@ -342,3 +342,5 @@ and limited processing capability must also be considered. Furthermore,
 since wireless communications and mobility typically go hand in hand,
 the continual advances in wireless technologies keep on producing new
 challenges and opportunities for mobile networking.
+
+{% include "../sidebars/mobile-ip.md" %}

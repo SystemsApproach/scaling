@@ -1071,3 +1071,5 @@ quality-of-service. It is interesting to note that, in most of these
 areas, the IPv4 and IPv6 capabilities have become virtually
 indistinguishable, so that the main driver for IPv6 remains the need for
 larger addresses.
+
+{% include "../sidebars/ipv4-ipv6.md" %}

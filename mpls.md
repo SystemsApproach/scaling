@@ -473,4 +473,4 @@ between the two conventional extremes. This extends the capabilities of
 IP networks to enable, among other things, more precise control of
 routing and the support of a range of VPN services.
 
-
+{% include "../sidebars/mpls.md" %}
