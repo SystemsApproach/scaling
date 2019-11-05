@@ -71,7 +71,7 @@ IPv4 only, some will run IPv4 and IPv6, and some will run IPv6
 only. It is doubtful they anticipated that transition period would be
 approaching its 30th anniversary.
 
-..include:: ../sidebars/ipv4-ipv6.rst
+.. include:: ../sidebars/ipv4-ipv6.rst
 
 Addresses and Routing
 ---------------------
