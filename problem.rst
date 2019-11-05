@@ -1,17 +1,14 @@
-# {{ page.title }}
-
-> Every seeming equality conceals a hierarchy. *—Mason Cooley*
-
-## Problem: Scaling to Billions
+Problem: Scaling to Billions
+----------------------------
 
 We have now seen how to build an internetwork that consists of a number
 of networks of different types. That is, we have dealt with the problem
 of *heterogeneity*. The second critical problem in
-internetworking—arguably the fundamental problem for all
-networking—is *scale*. To understand the problem of scaling
-a network, it is worth considering the growth of the Internet, which
-has roughly doubled in size each year for 30 years. This sort of
-growth forces us to face a number of challenges.
+internetworking—arguably the fundamental problem for all networking—is
+*scale*. To understand the problem of scaling a network, it is worth
+considering the growth of the Internet, which has roughly doubled in
+size each year for 30 years. This sort of growth forces us to face a
+number of challenges.
 
 Chief among these is how do you build a routing system that can handle
 hundreds of thousands of networks and billions of end nodes? As we will
@@ -33,7 +30,7 @@ retrofitted to IPv4.
 
 While the Internet continues to grow in size, it also needs to evolve
 its functionality. The final sections of this chapter cover some
-significant enhancements to the Internet's capabilities. The first,
+significant enhancements to the Internet’s capabilities. The first,
 multicast, is an enhancement of the basic service model. We show how
 multicast—the ability to deliver the same packets to a group of
 receivers efficiently—can be incorporated into an internet, and we

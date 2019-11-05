@@ -1,61 +1,64 @@
-# {{ page.title }}
+4.5 Routing Among Mobile Devices
+================================
 
 It probably should not be a great surprise to learn that mobile devices
 present some challenges for the Internet architecture. The Internet was
 designed in an era when computers were large, immobile devices, and,
-while the Internet's designers probably had some notion that mobile
-devices might appear in the future, it's fair to assume it was not a top
+while the Internet’s designers probably had some notion that mobile
+devices might appear in the future, it’s fair to assume it was not a top
 priority to accommodate them. Today, of course, mobile computers are
-everywhere, notably in the forms of laptops and smartphones, and
-and increasingly in other forms, such as drones. In this section, we
-will look at some of the challenges posed by the appearance of mobile
-devices and some of the current approaches to accommodating
-them.
+everywhere, notably in the form of laptops and smartphones, and
+increasingly in other forms, such as drones. In this section, we will
+look at some of the challenges posed by the appearance of mobile devices
+and some of the current approaches to accommodating them.
 
-## Challenges for Mobile Networking
+Challenges for Mobile Networking
+--------------------------------
 
-It is easy enough today to turn up in a wireless hotspot,
-connect to the Internet using 802.11 or some other wireless networking
-protocol, and obtain pretty good Internet service. One key enabling
-technology that made the hotspot feasible is DHCP. You can settle
-in at a coffee shop, open your laptop, obtain an IP address for your
-laptop, and get your laptop talking to a default router and a Domain
-Name System (DNS) server, and for a broad class of applications you
-have everything you need.
+It is easy enough today to turn up in a wireless hotspot, connect to the
+Internet using 802.11 or some other wireless networking protocol, and
+obtain pretty good Internet service. One key enabling technology that
+made the hotspot feasible is DHCP. You can settle in at a coffee shop,
+open your laptop, obtain an IP address for your laptop, and get your
+laptop talking to a default router and a Domain Name System (DNS)
+server, and for a broad class of applications you have everything you
+need.
 
-If we look a little more closely, however, it's clear that for some
+If we look a little more closely, however, it’s clear that for some
 application scenarios, just getting a new IP address every time you
-move—which is what DHCP does for you—isn't always enough. Suppose
-you are using your laptop or smartphone for a Voice over IP telephone
+move—which is what DHCP does for you—isn’t always enough. Suppose you
+are using your laptop or smartphone for a Voice over IP telephone
 call, and while talking on the phone you move from one hotspot to
 another, or even switch from Wi-Fi to the cellular network for your
 Internet connection.
 
 Clearly, when you move from one access network to another, you need to
 get a new IP address—one that corresponds to the new network. But, the
-computer or telephone at the other end of your conversation doesn't
+computer or telephone at the other end of your conversation doesn’t
 immediately know where you have moved or what your new IP address is.
 Consequently, in the absence of some other mechanism, packets would
-continue to be sent to the address where you *used* to be, not where you
-are now. This problem is illustrated in [Figure 1](#mobileeg); as the
-mobile node moves from the 802.11 network in [Figure 1(a)](#mobileeg)
-to the cellular network in [Figure 1(b)](#mobileeg), somehow packets
-from the *correspondent node* need to find their way to the new network
-and then on to the mobile node.
+continue to be sent to the address where you *used* to be, not where
+you are now. This problem is illustrated in :numref:`Figure %s
+<fig-mobileeg>`; as the mobile node moves from the 802.11 network in
+:numref:`Figure %s(a) <fig-mobileeg>` to the cellular network in
+:numref:`Figure %s(b) <fig-mobileeg>`, somehow packets from the
+*correspondent node* need to find their way to the new network and
+then on to the mobile node.
 
-<figure class="line">
-	<a id="mobileeg"></a>
-	<img src="figures/f04-26-22092018.png" width="500px"/>
-	<figcaption>Forwarding packets from a correspondent node to a
-	mobile node.</figcaption>
-</figure>
+.. _fig-mobileeg:
+.. figure:: figures/f04-26-22092018.png
+   :width: 500px
+   :align: center
+
+   Forwarding packets from a correspondent node to a
+   mobile node.
 
 There are many different ways to tackle the problem just described, and
 we will look at some of them below. Assuming that there is some way to
 redirect packets so that they come to your new address rather than your
 old address, the next immediately apparent problems relate to security.
-For example, if there is a mechanism by which I can say, "My new IP
-address is X," how do I prevent some attacker from making such a
+For example, if there is a mechanism by which I can say, “My new IP
+address is X,” how do I prevent some attacker from making such a
 statement without my permission, thus enabling him to either receive my
 packets, or to redirect my packets to some unwitting third party? Thus,
 we see that security and mobility are quite closely related.
@@ -69,35 +72,34 @@ the endpoint. As long as devices do not move, or do not move often,
 using a single address for both jobs seem pretty reasonable. But once
 devices start to move, you would rather like to have an identifier that
 does not change as you move—this is sometimes called an *Endpoint
-Identifier* or *Host Identifier*—and a separate *locator*. This idea
-of separating locators from identifiers has been around for a long time,
+Identifier* or *Host Identifier*—and a separate *locator*. This idea of
+separating locators from identifiers has been around for a long time,
 and most of the approaches to handling mobility described below provide
 such a separation in some form.
 
-The assumption that IP addresses don't change shows up in many
-different places. For example, transport protocols like TCP have
-historically made assumptions about the IP address staying constant
-for the life of a connection, so one approach could be to redesign
-transport protocols so they can operate with changing end-point
-addresses.
+The assumption that IP addresses don’t change shows up in many different
+places. For example, transport protocols like TCP have historically made
+assumptions about the IP address staying constant for the life of a
+connection, so one approach could be to redesign transport protocols so
+they can operate with changing end-point addresses.
 
 But rather than try to change TCP, a common alternative is for the
-application to periodically re-establish the TCP connection in case
-the client's IP address has changed. As strange as this sounds, if the
+application to periodically re-establish the TCP connection in case the
+client’s IP address has changed. As strange as this sounds, if the
 application is HTTP-based (e.g., a web browser like Chrome or a
-streaming application like Netflix) then that exactly what happens. In
-other words, the strategy is for the application to work around situations
-where the user's IP address may have changed, instead of trying to
-maintain the appearence that it does not change.
+streaming application like Netflix) then that is exactly what happens.
+In other words, the strategy is for the application to work around
+situations where the user’s IP address may have changed, instead of
+trying to maintain the appearance that it does not change.
 
 While we are all familiar with endpoints that move, it is worth noting
 that routers can also move. This is certainly less common today than
 endpoint mobility, but there are plenty of environments where a mobile
-router might make sense. One example might be an emergency response team
-trying to deploy a network after some natural disaster has knocked out
-all the fixed infrastructure. There are additional considerations when
-*all* the nodes in a network, not just the endpoints, are mobile, a
-topic we will discuss later in this section.
+router might make sense. One example might be an emergency response
+team trying to deploy a network after some natural disaster has
+knocked out all the fixed infrastructure. There are additional
+considerations when *all* the nodes in a network, not just the
+endpoints, are mobile, a topic we will discuss later in this section.
 
 Before we start to look at some of the approaches to supporting mobile
 devices, a couple of points of clarification. It is common to find that
@@ -109,17 +111,18 @@ around as it communicates. Certainly many nodes that use wireless
 communication channels are not mobile, and sometimes mobile nodes will
 use wired communication (although this is less common).
 
-Finally, in this chapter we are mostly interested in what we might call
-*network-layer mobility*. That is, we are interested in how to deal with
-nodes that move from one network to another. Moving from one access
-point to another in the same 802.11 network can be handled by mechanisms
-specific to 802.11, and cellular networks also have ways to
-handle mobility, of course, but in large heterogeneous systems like the
-Internet we need to support mobility more broadly across networks.
+Finally, in this chapter we are mostly interested in what we might
+call *network-layer mobility*. That is, we are interested in how to
+deal with nodes that move from one network to another. Moving from one
+access point to another in the same 802.11 network can be handled by
+mechanisms specific to 802.11, and cellular networks also have ways to
+handle mobility, of course, but in large heterogeneous systems like
+the Internet we need to support mobility more broadly across networks.
 
-## Routing to Mobile Hosts (Mobile IP)
+Routing to Mobile Hosts (Mobile IP)
+-----------------------------------
 
-Mobile IP is the primary mechanism in today's Internet architecture to
+Mobile IP is the primary mechanism in today’s Internet architecture to
 tackle the problem of routing packets to mobile hosts. It introduces a
 few new capabilities but does not require any change from non-mobile
 hosts or most routers—thus making it incrementally deployable.
@@ -133,16 +136,16 @@ think of this as the long-lived identifier of the host.
 
 When the host moves to a new foreign network away from its home network,
 it typically acquires a new address on that network using some means
-such as DHCP. This address is going to change every time the host
-roams to a new network, so we can think of this as being more like the
-locator for the host, but it is important to note that the host does not
-lose its permanent home address when it acquires a new address on the
-foreign network. This home address is critical to its ability to sustain
-communications as it moves, as we'll see below.
+such as DHCP. This address is going to change every time the host roams
+to a new network, so we can think of this as being more like the locator
+for the host, but it is important to note that the host does not lose
+its permanent home address when it acquires a new address on the foreign
+network. This home address is critical to its ability to sustain
+communications as it moves, as we’ll see below.
 
-> Because DHCP was developed around the same time as Mobile IP, the 
-> original Mobile IP standards did not require DHCP, but DHCP is 
-> ubiquitous today. 
+   Because DHCP was developed around the same time as Mobile IP, the
+   original Mobile IP standards did not require DHCP, but DHCP is
+   ubiquitous today.
 
 While the majority of routers remain unchanged, mobility support does
 require some new functionality in at least one router, known as the
@@ -152,13 +155,14 @@ functionality, the *foreign agent,* is also required. This router is
 located on a network to which the mobile node attaches itself when it is
 away from its home network. We will consider first the operation of
 Mobile IP when a foreign agent is used. An example network with both
-home and foreign agents is shown in [Figure 2](#mobile).
+home and foreign agents is shown in :numref:`Figure %s <fig-mobile>`.
+ 
+.. _fig-mobile:
+.. figure:: figures/f04-27-9780123850591.png
+   :width: 500px
+   :align: center
 
-<figure class="line">
-	<a id="mobile"></a>
-	<img src="figures/f04-27-9780123850591.png" width="500px"/>
-	<figcaption>Mobile host and mobility agents.</figcaption>
-</figure>
+   Mobile host and mobility agents.
 
 Both home and foreign agents periodically announce their presence on the
 networks to which they are attached using agent advertisement messages.
@@ -179,32 +183,30 @@ is sitting. Thus, we can divide the problem of delivering the packet to
 the mobile node into three parts:
 
 1. How does the home agent intercept a packet that is destined for the
-    mobile node?
+   mobile node?
 
-2. How does the home agent then deliver the packet to the foreign
-    agent?
+2. How does the home agent then deliver the packet to the foreign agent?
 
 3. How does the foreign agent deliver the packet to the mobile node?
 
-The first problem might look easy if you just look at
-[Figure 2](#mobile), in which the home agent is clearly the only path
-between the sending host and the home network and thus must receive
-packets that are destined to the mobile node. But what if the sending
-(correspondent) node were on network 18, or what if there were another
-router connected to network 18 that tried to deliver the packet without
-its passing through the home agent? To address this problem, the home
-agent actually impersonates the mobile node, using a technique called
-*proxy ARP.* This works just like Address Resolution Protocol (ARP),
-except that the home agent inserts the IP address of the mobile node,
-rather than its own, in the ARP messages. It uses its own hardware
-address, so that all the nodes on the same network learn to associate
-the hardware address of the home agent with the IP address of the mobile
-node. One subtle aspect of this process is the fact that ARP information
-may be cached in other nodes on the network. To make sure that these
-caches are invalidated in a timely way, the home agent issues an ARP
-message as soon as the mobile node registers with a foreign agent.
-Because the ARP message is not a response to a normal ARP request, it is
-termed a *gratuitous ARP*.
+The first problem might look easy if you just look at :numref:`Figure
+%s <fig-mobile>`, in which the home agent is clearly the only path between
+the sending host and the home network and thus must receive packets that
+are destined to the mobile node. But what if the sending (correspondent)
+node were on network 18, or what if there were another router connected
+to network 18 that tried to deliver the packet without its passing
+through the home agent? To address this problem, the home agent actually
+impersonates the mobile node, using a technique called *proxy ARP.* This
+works just like Address Resolution Protocol (ARP), except that the home
+agent inserts the IP address of the mobile node, rather than its own, in
+the ARP messages. It uses its own hardware address, so that all the
+nodes on the same network learn to associate the hardware address of the
+home agent with the IP address of the mobile node. One subtle aspect of
+this process is the fact that ARP information may be cached in other
+nodes on the network. To make sure that these caches are invalidated in
+a timely way, the home agent issues an ARP message as soon as the mobile
+node registers with a foreign agent. Because the ARP message is not a
+response to a normal ARP request, it is termed a *gratuitous ARP*.
 
 The second problem is the delivery of the intercepted packet to the
 foreign agent. Here we use the tunneling technique described elsewhere.
@@ -233,10 +235,10 @@ dynamically acquire an IP address that is located in the address space
 of the foreign network (e.g., using DHCP). This address will then be
 used as the care-of address. In our example, this address would have a
 network number of 12. This approach has the desirable feature of
-allowing mobile nodes to attach to networks that don't have foreign
-agents; thus, mobility can be achieved with only the addition of a home
-agent and some new software on the mobile node (assuming DHCP is used on
-the foreign network).
+allowing mobile nodes to attach to networks that don’t have foreign
+agents; thus, mobility can be achieved with only the addition of a
+home agent and some new software on the mobile node (assuming DHCP is
+used on the foreign network).
 
 What about traffic in the other direction (i.e., from mobile node to
 fixed node)? This turns out to be much easier. The mobile node just puts
@@ -246,7 +248,8 @@ packets are forwarded to the fixed node using normal means. Of course,
 if both nodes in a conversation are mobile, then the procedures
 described above are used in each direction.
 
-### Route Optimization in Mobile IP
+Route Optimization in Mobile IP
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There is one significant drawback to the above approach: The route from
 the correspondent node to the mobile node can be significantly
@@ -275,7 +278,7 @@ optimized; if not, packets just follow the suboptimal route.
 
 When a home agent sees a packet destined for one of the mobile nodes
 that it supports, it can deduce that the sender is not using the optimal
-route. Therefore, it sends a "binding update" message back to the
+route. Therefore, it sends a “binding update” message back to the
 source, in addition to forwarding the data packet to the foreign agent.
 The source, if capable, uses this binding update to create an entry in a
 *binding cache,* which consists of a list of mappings from mobile node
@@ -301,14 +304,16 @@ some other node in an internetwork could contact the home agent for that
 node and announce itself as the new foreign agent for the node. Thus, it
 is clear that some authentication mechanisms are required.
 
-### Mobility in IPv6
+Mobility in IPv6
+~~~~~~~~~~~~~~~~
 
 There are a handful of significant differences between mobility support
 in IPv4 and IPv6. Most importantly, it was possible to build mobility
 support into the standards for IPv6 pretty much from the beginning, thus
 alleviating a number of incremental deployment problems. (It may be more
 correct to say that IPv6 is one big incremental deployment problem,
-which, once solved, will deliver mobility support as part of the package.)
+which, once solved, will deliver mobility support as part of the
+package.)
 
 Since all IPv6-capable hosts can acquire an address whenever they are
 attached to a foreign network (using several mechanisms defined as part
@@ -329,18 +334,18 @@ illusion that its IP address is fixed. Using an extension header rather
 than a tunnel is more efficient from the perspective of both bandwidth
 consumption and processing.
 
+.. include:: ../sidebars/mobile-ip.rst
+
 Finally, we note that many open issues remain in mobile networking.
 Managing the power consumption of mobile devices is increasingly
-important, so that smaller devices with limited battery power can by
-built. There is also the problem of *ad hoc* mobile networks—enabling
-a group of mobile nodes to form a network in the absence of any fixed
-nodes—which has some special challenges. A
-particularly challenging class of mobile networks is *sensor networks*.
-Sensors typically are small, inexpensive, and
-often battery powered, meaning that issues of very low power consumption
-and limited processing capability must also be considered. Furthermore,
-since wireless communications and mobility typically go hand in hand,
-the continual advances in wireless technologies keep on producing new
-challenges and opportunities for mobile networking.
-
-{% include "../sidebars/mobile-ip.md" %}
+important, so that smaller devices with limited battery power can be
+built. There is also the problem of *ad hoc* mobile networks—enabling a
+group of mobile nodes to form a network in the absence of any fixed
+nodes—which has some special challenges. A particularly challenging
+class of mobile networks is *sensor networks*. Sensors typically are
+small, inexpensive, and often battery powered, meaning that issues of
+very low power consumption and limited processing capability must also
+be considered. Furthermore, since wireless communications and mobility
+typically go hand in hand, the continual advances in wireless
+technologies keep on producing new challenges and opportunities for
+mobile networking.
